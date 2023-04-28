@@ -1,6 +1,6 @@
 package com.example.vendingmachine.states;
 
-import com.example.vendingmachine.PurchaseRecord;
+import com.example.vendingmachine.model.PurchaseRecord;
 import com.example.vendingmachine.model.SodaMachine;
 
 import java.time.LocalDateTime;
