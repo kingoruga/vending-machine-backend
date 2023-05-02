@@ -1,14 +1,17 @@
 package com.example.vendingmachine.states;
 
 import com.example.vendingmachine.model.SodaMachine;
+import com.example.vendingmachine.service.SodaMachineService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SoldState implements SodaMachine {
     private final SodaMachineContext context;
+    private final SodaMachineService sodaMachineService;
 
-    public SoldState(SodaMachineContext context) {
+    public SoldState(SodaMachineContext context, SodaMachineService sodaMachineService) {
         this.context = context;
+        this.sodaMachineService = sodaMachineService;
     }
 
     @Override
@@ -29,10 +32,10 @@ public class SoldState implements SodaMachine {
     @Override
     public String dispenseSoda() {
         context.releaseSoda();
-        context.addPurchaseRecord();
+        Long purchaseRecordId = sodaMachineService.addPurchaseRecord();
         if (context.getSodasRemaining() > 0) {
             context.setState(context.getNoQuarterState());
-            return "Soda dispensed.";
+            return "Soda dispensed. Purchase ID: " + purchaseRecordId;
         } else {
             context.setState(context.getSoldOutState());
             return "Soda is sold out.";

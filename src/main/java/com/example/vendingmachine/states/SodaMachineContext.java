@@ -1,30 +1,24 @@
 package com.example.vendingmachine.states;
 
-import com.example.vendingmachine.model.PurchaseRecord;
 import com.example.vendingmachine.model.SodaMachine;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.vendingmachine.service.SodaMachineService;
 
 public class SodaMachineContext {
     private SodaMachine currentMachineState;
     private int sodasRemaining;
-    private final List<PurchaseRecord> purchaseRecords;
 
     private final SodaMachine soldOutState;
     private final SodaMachine noQuarterState;
     private final SodaMachine hasQuarterState;
     private final SodaMachine soldState;
 
-    public SodaMachineContext(int initialSodas) {
+    public SodaMachineContext(int initialSodas, SodaMachineService sodaMachineService) {
         soldOutState = new SoldOutState(this);
         noQuarterState = new NoQuarterState(this);
         hasQuarterState = new HasQuarterState(this);
-        soldState = new SoldState(this);
+        soldState = new SoldState(this, sodaMachineService);
 
         sodasRemaining = initialSodas;
-        purchaseRecords = new ArrayList<>();
 
         if (initialSodas > 0) {
             currentMachineState = noQuarterState;
@@ -61,15 +55,6 @@ public class SodaMachineContext {
         if (sodasRemaining > 0) {
             sodasRemaining--;
         }
-    }
-
-    public void addPurchaseRecord() {
-        LocalDateTime timestamp = LocalDateTime.now();
-        purchaseRecords.add(new PurchaseRecord(timestamp));
-    }
-
-    public List<PurchaseRecord> getPurchaseRecords() {
-        return purchaseRecords;
     }
 
     public SodaMachine getSoldOutState() {

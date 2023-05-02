@@ -1,6 +1,7 @@
 package com.example.vendingmachine.controller;
 
 import com.example.vendingmachine.model.BaseResponse;
+import com.example.vendingmachine.service.SodaMachineService;
 import com.example.vendingmachine.states.SodaMachineContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class VendingMachineController {
     private final SodaMachineContext sodaMachine;
 
-    public VendingMachineController() {
+    public VendingMachineController(SodaMachineService sodaMachineService) {
         // Initialize the soda machine with a default number of sodas
-        this.sodaMachine = new SodaMachineContext(10);
+        this.sodaMachine = new SodaMachineContext(10, sodaMachineService);
     }
 
     @GetMapping("/insert-quarter")

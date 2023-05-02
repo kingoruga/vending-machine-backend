@@ -1,22 +1,27 @@
 package com.example.vendingmachine.states;
 
+import com.example.vendingmachine.service.SodaMachineService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * With more complex applications that need mocking I would run with Mockito instead of
- * SpringBootTest.
- * */
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class VendingMachineTest {
+
     private SodaMachineContext sodaMachine;
+    @Mock
+    private SodaMachineService sodaMachineService;
+
 
     @BeforeEach
     public void setUp() {
-        sodaMachine = new SodaMachineContext(5);
+        sodaMachine = new SodaMachineContext(5, sodaMachineService);
     }
 
     @Test
@@ -58,7 +63,7 @@ public class VendingMachineTest {
 
     @Test
     public void testSoldOut() {
-        sodaMachine = new SodaMachineContext(0);
+        sodaMachine = new SodaMachineContext(0, sodaMachineService);
         assertEquals(sodaMachine.getSoldOutState(), sodaMachine.getCurrentState(), "If no sodas are remaining, the soda machine should be in the 'Sold Out' state.");
     }
 }
